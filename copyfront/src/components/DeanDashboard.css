@@ -1,0 +1,1167 @@
+/* DeanDashboard.css - Complete Styles */
+
+/* Reset and Base Styles */
+.dean-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Loading Screen */
+.dean-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.dean-loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Header Styles */
+.dean-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dean-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dean-header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dean-header-title h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.dean-header-title p {
+  margin: 0.2rem 0 0 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.dean-header-icon {
+  font-size: 2.5rem;
+}
+
+.dean-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dean-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 50px;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.dean-user-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.dean-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.dean-user-name {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.dean-user-role {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.dean-refresh-btn, .dean-logout-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.dean-refresh-btn {
+  background: #3498db;
+  color: white;
+}
+
+.dean-refresh-btn:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.dean-logout-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.dean-logout-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
+
+/* Notification Banners */
+.dean-error-banner, .dean-success-banner {
+  padding: 1rem 2rem;
+  margin: 0 2rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.dean-error-banner {
+  background: #fee;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.dean-success-banner {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.dean-error-content, .dean-success-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dean-error-close, .dean-success-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Navigation */
+.dean-nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.dean-nav-container {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.dean-nav-btn {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dean-nav-btn:hover {
+  color: #3498db;
+  background: rgba(52, 152, 219, 0.05);
+}
+
+.dean-nav-btn.active {
+  color: #3498db;
+  border-bottom-color: #3498db;
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* Main Content */
+.dean-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* Dashboard Tab */
+.dean-dashboard-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dean-welcome-section {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.dean-welcome-content h2 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+}
+
+.dean-welcome-content p {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+}
+
+.dean-welcome-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.dean-stat-card.quick-stat {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.quick-stat .stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+
+.quick-stat .stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.dean-welcome-graphic {
+  flex-shrink: 0;
+}
+
+.dean-graphic-icon {
+  font-size: 4rem;
+  opacity: 0.8;
+}
+
+/* Statistics Grid */
+.dean-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.dean-stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dean-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon.total { background: rgba(52, 152, 219, 0.1); color: #3498db; }
+.stat-icon.pending { background: rgba(243, 156, 18, 0.1); color: #f39c12; }
+.stat-icon.progress { background: rgba(155, 89, 182, 0.1); color: #9b59b6; }
+.stat-icon.resolved { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+
+.stat-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0;
+}
+
+/* Quick Actions */
+.dean-quick-actions {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dean-quick-actions h3 {
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+}
+
+.dean-action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dean-action-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.dean-action-btn.primary {
+  background: #3498db;
+  color: white;
+}
+
+.dean-action-btn.primary:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.dean-action-btn.secondary {
+  background: #ecf0f1;
+  color: #2c3e50;
+  border: 1px solid #bdc3c7;
+}
+
+.dean-action-btn.secondary:hover {
+  background: #d5dbdb;
+  transform: translateY(-2px);
+}
+
+/* Recent Activity */
+.dean-recent-activity {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dean-recent-activity h3 {
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+}
+
+.dean-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dean-activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.dean-activity-item:hover {
+  background: #f8f9fa;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-title {
+  font-weight: 600;
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.activity-description {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.activity-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.activity-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: #95a5a6;
+}
+
+.dean-no-activity {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* Complaints Tab */
+.dean-complaints-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dean-complaints-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dean-complaints-title h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+}
+
+.dean-complaints-title p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.dean-complaints-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.dean-complaints-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: right;
+}
+
+.total-count {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.pending-count {
+  font-size: 0.9rem;
+  color: #e74c3c;
+}
+
+/* Complaints Grid */
+.dean-complaints-container {
+  min-height: 400px;
+}
+
+.dean-no-complaints {
+  background: white;
+  padding: 4rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.no-complaints-icon {
+  font-size: 4rem;
+  opacity: 0.3;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.dean-no-complaints h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+}
+
+.dean-no-complaints p {
+  margin: 0.5rem 0;
+  color: #7f8c8d;
+}
+
+.dean-complaints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.dean-complaint-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dean-complaint-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.complaint-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.complaint-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.complaint-id {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.complaint-priority {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  text-transform: capitalize;
+}
+
+.status-select {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.complaint-body {
+  padding: 1.5rem;
+}
+
+.complaint-description h4 {
+  margin: 0 0 0.75rem 0;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.complaint-description p {
+  margin: 0;
+  color: #5d6d7e;
+  line-height: 1.5;
+}
+
+.complaint-details {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.visibility.public { color: #27ae60; }
+.visibility.private { color: #e74c3c; }
+
+.complaint-attachment {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.attachment-icon {
+  font-size: 1.1rem;
+}
+
+.attachment-name {
+  color: #3498db;
+  font-size: 0.9rem;
+}
+
+.complaint-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #ecf0f1;
+  background: #f8f9fa;
+}
+
+.complaint-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resolve-action-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.resolve-action-btn:hover {
+  background: #219653;
+}
+
+.resolved-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.resolved-by {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.resolved-date {
+  color: #7f8c8d;
+}
+
+.view-details-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.view-details-btn:hover {
+  background: #2980b9;
+}
+
+/* Profile Tab */
+.dean-profile-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dean-profile-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dean-profile-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+}
+
+.dean-profile-header p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.dean-profile-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.dean-profile-card, .dean-system-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.profile-avatar-large {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.profile-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.profile-role {
+  margin: 0 0 0.25rem 0;
+  color: #3498db;
+  font-weight: 600;
+}
+
+.profile-email {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.detail-section {
+  margin-bottom: 2rem;
+}
+
+.detail-section h4 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.role-badge {
+  background: #3498db;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-active {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+/* Password Update Form */
+.password-update-form {
+  margin-top: 1rem;
+}
+
+.password-error {
+  background: #fee;
+  color: #e74c3c;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border: 1px solid #f5c6cb;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.update-password-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.update-password-btn:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.update-password-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* System Card */
+.dean-system-card h3 {
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+}
+
+.system-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.system-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.system-label {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.system-value {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Modal Styles */
+.dean-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.dean-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #e74c3c;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.complaint-preview {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.complaint-preview p {
+  margin: 0.5rem 0;
+  color: #2c3e50;
+}
+
+.resolution-notes label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.resolution-notes textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.resolution-notes textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-btn.primary {
+  background: #27ae60;
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  background: #219653;
+}
+
+.modal-btn.secondary {
+  background: #95a5a6;
+  color: white;
+}
+
+.modal-btn.secondary:hover {
+  background: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dean-header-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .dean-nav-container {
+    flex-direction: column;
+  }
+
+  .dean-nav-btn {
+    justify-content: center;
+  }
+
+  .dean-complaints-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dean-complaints-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .dean-profile-content {
+    grid-template-columns: 1fr;
+  }
+
+  .dean-complaints-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .complaint-details {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dean-welcome-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .dean-welcome-stats {
+    justify-content: center;
+  }
+
+  .dean-action-buttons {
+    flex-direction: column;
+  }
+
+  .dean-action-btn {
+    width: 100%;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .dean-nav,
+  .dean-header-actions,
+  .complaint-actions {
+    display: none !important;
+  }
+
+  .dean-dashboard {
+    background: white !important;
+  }
+
+  .dean-complaint-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}

@@ -1,0 +1,434 @@
+/* DeanLogin.css */
+.dean-login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dean-login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dean-login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-header h2 {
+  color: #2d3748;
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-subtitle {
+  color: #718096;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid transparent;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.success {
+  background: #f0fff4;
+  color: #2f855a;
+  border-color: #9ae6b4;
+}
+
+.message.error {
+  background: #fed7d7;
+  color: #c53030;
+  border-color: #fc8181;
+}
+
+.dean-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.form-input:focus {
+  border-color: #667eea;
+  background: white;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input:disabled {
+  background: #f7fafc;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.login-btn {
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-btn.loading {
+  color: transparent;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.login-links {
+  margin-top: 25px;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.forgot-password {
+  display: block;
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.switch-login-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.switch-login-options p {
+  margin: 0;
+  font-size: 14px;
+  color: #718096;
+}
+
+.switch-login-options a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.switch-login-options a:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.login-info {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f7fafc;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #718096;
+  border-left: 4px solid #667eea;
+}
+
+.login-info p {
+  margin: 5px 0;
+}
+
+.login-info strong {
+  color: #4a5568;
+}
+
+/* Dean-specific styling */
+.dean-login-card {
+  border-top: 4px solid #4c51bf;
+}
+
+.dean-login-card::before {
+  background: linear-gradient(135deg, #4c51bf 0%, #7e22ce 100%);
+}
+
+.login-header h2 {
+  background: linear-gradient(135deg, #4c51bf 0%, #7e22ce 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 20px rgba(76, 81, 191, 0.3);
+}
+
+.form-input:focus {
+  border-color: #4c51bf;
+  box-shadow: 0 0 0 3px rgba(76, 81, 191, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .dean-login-container {
+    padding: 10px;
+  }
+  
+  .dean-login-card {
+    padding: 30px 20px;
+  }
+  
+  .login-header h2 {
+    font-size: 24px;
+  }
+  
+  .form-input {
+    padding: 12px 14px;
+  }
+  
+  .login-btn {
+    padding: 12px 16px;
+  }
+  
+  .switch-login-options {
+    gap: 6px;
+  }
+  
+  .switch-login-options p {
+    font-size: 13px;
+  }
+}
+
+/* Animation for form elements */
+.form-group {
+  animation: fadeInUp 0.5s ease;
+}
+
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.login-btn {
+  animation: fadeInUp 0.5s ease;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading state enhancements */
+.login-btn:disabled {
+  position: relative;
+}
+
+/* Focus states for accessibility */
+.form-input:focus,
+.login-btn:focus,
+.forgot-password:focus,
+.switch-login-options a:focus {
+  outline: 2px solid #4c51bf;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .dean-login-container {
+    background: white !important;
+  }
+  
+  .dean-login-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+  }
+  
+  .login-btn {
+    background: #666 !important;
+    color: white !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .dean-login-card {
+    border: 2px solid #000;
+  }
+  
+  .form-input {
+    border: 2px solid #000;
+  }
+  
+  .message.success {
+    border: 2px solid #006400;
+  }
+  
+  .message.error {
+    border: 2px solid #8b0000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .form-group,
+  .login-btn,
+  .message {
+    animation: none;
+  }
+  
+  .login-btn:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .dean-login-card {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  .login-header h2 {
+    color: #e2e8f0;
+  }
+  
+  .form-group label {
+    color: #e2e8f0;
+  }
+  
+  .form-input {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+  }
+  
+  .form-input:focus {
+    background: #2d3748;
+    border-color: #667eea;
+  }
+  
+  .form-input::placeholder {
+    color: #a0aec0;
+  }
+  
+  .login-info {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .login-info strong {
+    color: #e2e8f0;
+  }
+  
+  .switch-login-options p {
+    color: #a0aec0;
+  }
+}
