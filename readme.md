@@ -10,7 +10,7 @@ To run this project, you need to have Node.js and npm installed on your machine.
  
  
  
- 
+ backend:- https://svsugri-backend.onrender.com/
  
  const teacherCredentials = [
     { email: 'suml.sharma@svsu.ac.in', password: 'AbC123Xy' },
