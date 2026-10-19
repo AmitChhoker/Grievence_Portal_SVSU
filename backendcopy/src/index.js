@@ -38,8 +38,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // CORS — env-based
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'http://localhost:3000',
-  'http://localhost:1234'
+  // 'http://localhost:3000',
+  // 'http://localhost:1234'
 ].filter(Boolean);
 
 app.use(cors({
