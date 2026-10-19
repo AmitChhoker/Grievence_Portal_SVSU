@@ -3,6 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AuthForms.css';
 
+// ✅ Yahan hum environment variable use kar rahe hain
+// Agar Vercel par API_BASE set hoga, to wo use hoga. Warna localhost use hoga.
+const API_BASE = process.env.API_BASE || 'http://localhost:5000';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     emailId: '',
@@ -22,8 +26,8 @@ const Login = () => {
       
       if (user && token) {
         try {
-          // Verify token is still valid by making a test request
-          const response = await axios.get('http://localhost:5000/api/auth/verify-token', {
+          // ✅ Fixed URL
+          const response = await axios.get(`${API_BASE}/api/auth/verify-token`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           
@@ -72,7 +76,7 @@ const Login = () => {
 
     try {
       console.log('🔄 Sending login request...');
-      setDebugInfo('Sending request to server...');
+      setDebugInfo(`Sending request to ${API_BASE}...`);
       
       const loginData = {
         emailId: formData.emailId.trim().toLowerCase(),
@@ -81,14 +85,15 @@ const Login = () => {
 
       console.log('📤 Login data:', loginData);
 
+      // ✅ Fixed URL
       const response = await axios.post(
-        'http://localhost:5000/api/auth/login',
+        `${API_BASE}/api/auth/login`,
         loginData,
         {
           headers: { 
             'Content-Type': 'application/json'
           },
-          timeout: 10000
+          timeout: 15000 // Thoda badha diya kyunki Render free tier me time lagta hai
         }
       );
 
@@ -124,9 +129,12 @@ const Login = () => {
         setMessage(response.data.message || 'Login failed');
         setIsError(true);
       }
-        } catch (error) {
-      console.error('❌ Login error details:', error);
-      setMessage('❌ Login failed. Please check your credentials.');
+    } catch (error) {
+      // ✅ Fixed React 19 Error Overlay (console.error ki jagah console.log)
+      console.log('❌ Login error details:', error);
+      handleLoginError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -135,21 +143,21 @@ const Login = () => {
     let debugMessage = '';
     
     if (error.code === 'ECONNREFUSED') {
-      errorMessage += 'Cannot connect to server. Please make sure the backend is running on localhost:5000';
+      errorMessage += 'Cannot connect to server. Please make sure the backend is running.';
       debugMessage = 'Backend server is not running or not accessible';
     } else if (error.response) {
       errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
       debugMessage = `Server responded with status: ${error.response.status}`;
       console.log('📡 Server response:', error.response.data);
     } else if (error.request) {
-      errorMessage += 'No response from server. Please check if backend is running.';
-      debugMessage = 'Request was sent but no response received from server';
+      errorMessage += 'No response from server. Please check your connection.';
+      debugMessage = 'Request was sent but no response received (CORS or Server Down)';
     } else if (error.message.includes('Network Error')) {
-      errorMessage += 'Network error. Please check your internet connection and ensure backend is running.';
-      debugMessage = 'Network error - check backend server';
+      errorMessage += 'Network error. Backend URL might be wrong.';
+      debugMessage = 'Network error - check API_BASE or CORS settings';
     } else if (error.message.includes('timeout')) {
-      errorMessage += 'Request timeout. Server is taking too long to respond.';
-      debugMessage = 'Request timeout - server might be overloaded';
+      errorMessage += 'Request timeout. Server is taking too long to respond (Render cold start).';
+      debugMessage = 'Request timeout - server might be waking up';
     } else {
       errorMessage += error.message;
       debugMessage = error.message;
@@ -163,13 +171,14 @@ const Login = () => {
   const testTokenAfterLogin = async (token) => {
     try {
       console.log('🔐 Testing token after login...');
-      const response = await axios.get('http://localhost:5000/api/complaints/my-complaints', {
+      // ✅ Fixed URL
+      const response = await axios.get(`${API_BASE}/api/complaints/my-complaints`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('✅ Token test successful:', response.data);
       return true;
     } catch (error) {
-      console.error('❌ Token test failed:', error.response?.data || error.message);
+      console.log('❌ Token test failed:', error.response?.data || error.message);
       return false;
     }
   };
@@ -178,16 +187,17 @@ const Login = () => {
     setMessage('');
     setDebugInfo('');
     
+    // ✅ Fixed URLs
     const endpoints = [
-      'http://localhost:5000/api/health',
-      'http://localhost:5000/api/test',
-      'http://localhost:5000/health'
+      `${API_BASE}/api/health`,
+      `${API_BASE}/api/test`,
+      `${API_BASE}/health`
     ];
 
     for (const endpoint of endpoints) {
       try {
         setDebugInfo(`Testing: ${endpoint}`);
-        const response = await axios.get(endpoint, { timeout: 5000 });
+        const response = await axios.get(endpoint, { timeout: 8000 });
         setMessage(`✅ Backend connected! (${endpoint})`);
         setDebugInfo(`Server: ${response.data.message || 'Healthy'}`);
         setIsError(false);
@@ -199,7 +209,7 @@ const Login = () => {
     }
     
     setMessage('❌ All connection attempts failed');
-    setDebugInfo('Backend server is not running on port 5000. Run: npm start in backend folder');
+    setDebugInfo(`Backend server is not reachable at ${API_BASE}`);
     setIsError(true);
   };
 
