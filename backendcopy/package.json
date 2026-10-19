@@ -6,8 +6,10 @@
   "author": "",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "..."
+},
   "dependencies": {
     "accepts": "^2.0.0",
     "bcrypt": "^6.0.0",
