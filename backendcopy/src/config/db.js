@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 async function main(){
     try{
-        await mongoose.connect(process.env.MONGO_URI);
+        await mongoose.connect(process.env.DB_CONNECT_STRING);
         console.log("MongoDB connected");
     }catch(err){
         console.log(err);
