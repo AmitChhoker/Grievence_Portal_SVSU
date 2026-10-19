@@ -5,22 +5,23 @@ const Teacher = require('../models/teacher');
 const HOD = require('../models/hod');
 const Dean = require('../models/dean');
 
-// JWT Configuration with fallback
+// ==================== JWT CONFIG ====================
 const JWT_CONFIG = {
-    secret: process.env.JWT_SECRET || 'your-fallback-secret-key-for-development-only',
-    expiresIn: '7d'
+    secret: process.env.JWT_SECRET,
+    expiresIn: '30d'
 };
 
-// Validate JWT secret on module load
 if (!process.env.JWT_SECRET) {
-    console.warn('⚠️  WARNING: JWT_SECRET not found in environment variables. Using fallback key.');
-    console.warn('⚠️  For production, set JWT_SECRET in your .env file');
+    console.error('❌ FATAL: JWT_SECRET is not set. Auth will fail.');
 } else {
-    console.log('✅ JWT_SECRET loaded successfully');
+    console.log('✅ JWT_SECRET loaded successfully (' + process.env.JWT_SECRET.length + ' chars)');
 }
 
 // Helper function to generate JWT token
 const generateToken = (payload) => {
+    if (!JWT_CONFIG.secret) {
+        throw new Error('JWT_SECRET missing — cannot generate token');
+    }
     try {
         return jwt.sign(
             {
@@ -38,14 +39,13 @@ const generateToken = (payload) => {
     }
 };
 
-// Student Registration
+// ==================== STUDENT REGISTRATION ====================
 const studentRegister = async (req, res) => {
     try {
         console.log('Received registration data:', req.body);
 
         const { name, courseName, emailId, password, rollno, department, phoneNumber, semester, year } = req.body;
 
-        // Basic validation
         if (!name || !emailId || !password || !rollno || !courseName || !department) {
             return res.status(400).json({
                 success: false,
@@ -53,10 +53,10 @@ const studentRegister = async (req, res) => {
             });
         }
 
-        const existingUser = await User.findOne({ 
-            $or: [{ emailId }, { rollno }] 
+        const existingUser = await User.findOne({
+            $or: [{ emailId: emailId.toLowerCase().trim() }, { rollno }]
         });
-        
+
         if (existingUser) {
             return res.status(400).json({
                 success: false,
@@ -82,7 +82,6 @@ const studentRegister = async (req, res) => {
         await user.save();
         console.log('Student saved successfully:', user._id);
 
-        // Generate token using helper function
         const token = generateToken({
             userId: user._id,
             role: user.role,
@@ -117,11 +116,11 @@ const studentRegister = async (req, res) => {
     }
 };
 
-// Teacher Registration
+// ==================== TEACHER REGISTRATION ====================
 const registerTeacher = async (req, res) => {
     try {
         console.log('👨‍🏫 Teacher registration request:', req.body);
-        
+
         const { name, emailId, password, department, role } = req.body;
 
         if (!name || !emailId || !password) {
@@ -132,7 +131,7 @@ const registerTeacher = async (req, res) => {
         }
 
         const existingTeacher = await Teacher.findOne({ emailId: emailId.toLowerCase().trim() });
-                
+
         if (existingTeacher) {
             return res.status(400).json({
                 success: false,
@@ -150,7 +149,7 @@ const registerTeacher = async (req, res) => {
             role: role || 'coordinator',
             isFirstLogin: false
         });
-        
+
         await teacher.save();
 
         res.status(201).json({
@@ -174,11 +173,11 @@ const registerTeacher = async (req, res) => {
     }
 };
 
-// HOD Registration
+// ==================== HOD REGISTRATION ====================
 const registerHOD = async (req, res) => {
     try {
         console.log('👨‍💼 HOD registration request:', req.body);
-        
+
         const { name, emailId, password, department } = req.body;
 
         if (!name || !emailId || !password) {
@@ -189,7 +188,7 @@ const registerHOD = async (req, res) => {
         }
 
         const existingHOD = await HOD.findOne({ emailId: emailId.toLowerCase().trim() });
-                
+
         if (existingHOD) {
             return res.status(400).json({
                 success: false,
@@ -230,11 +229,11 @@ const registerHOD = async (req, res) => {
     }
 };
 
-// Dean Registration
+// ==================== DEAN REGISTRATION ====================
 const registerDean = async (req, res) => {
     try {
         console.log('🎓 Dean registration request:', req.body);
-        
+
         const { name, emailId, password } = req.body;
 
         if (!name || !emailId || !password) {
@@ -245,7 +244,7 @@ const registerDean = async (req, res) => {
         }
 
         const existingDean = await Dean.findOne({ emailId: emailId.toLowerCase().trim() });
-                
+
         if (existingDean) {
             return res.status(400).json({
                 success: false,
@@ -284,7 +283,7 @@ const registerDean = async (req, res) => {
     }
 };
 
-// Student Login
+// ==================== STUDENT LOGIN ====================
 const login = async (req, res) => {
     try {
         console.log('🔐 Student login attempt:', req.body);
@@ -299,7 +298,6 @@ const login = async (req, res) => {
         }
 
         const cleanEmail = emailId.toLowerCase().trim();
-
         const user = await User.findOne({ emailId: cleanEmail });
 
         if (!user) {
@@ -317,7 +315,6 @@ const login = async (req, res) => {
             });
         }
 
-        // Generate token using helper function
         const token = generateToken({
             userId: user._id,
             role: user.role,
@@ -357,7 +354,7 @@ const login = async (req, res) => {
     }
 };
 
-// Teacher Login
+// ==================== TEACHER LOGIN ====================
 const teacherLogin = async (req, res) => {
     try {
         console.log('👨‍🏫 Teacher login attempt:', req.body);
@@ -372,47 +369,36 @@ const teacherLogin = async (req, res) => {
         }
 
         const cleanEmail = emailId.toLowerCase().trim();
-
         const teacher = await Teacher.findOne({ emailId: cleanEmail });
-        
+
         if (!teacher) {
-            console.log('❌ Teacher not found for email:', cleanEmail);
             return res.status(400).json({
                 success: false,
-                message: 'Teacher account not found. Please contact administration to register as a teacher.'
+                message: 'Teacher account not found. Please contact administration.'
             });
         }
 
-        // Check if user is a teacher (coordinator)
         if (teacher.role !== 'coordinator') {
-            console.log('❌ User is not a teacher:', teacher.role);
             return res.status(400).json({
                 success: false,
                 message: 'This account is not authorized for teacher access.'
             });
         }
 
-        console.log('✅ Teacher found:', teacher.emailId, 'Role:', teacher.role);
-
         const isPasswordValid = await bcrypt.compare(password, teacher.password);
-        
         if (!isPasswordValid) {
-            console.log('❌ Invalid password for teacher:', teacher.emailId);
             return res.status(400).json({
                 success: false,
                 message: 'Invalid password. Please try again.'
             });
         }
 
-        // Generate token using helper function
         const token = generateToken({
             userId: teacher._id,
             role: teacher.role,
             email: teacher.emailId,
             name: teacher.Name
         });
-
-        console.log('✅ Teacher login successful for:', teacher.emailId);
 
         const teacherResponse = {
             id: teacher._id,
@@ -440,10 +426,10 @@ const teacherLogin = async (req, res) => {
     }
 };
 
-// HOD Login
+// ==================== HOD LOGIN ====================
 const hodLogin = async (req, res) => {
     try {
-        console.log('👨‍💼 HOD login request received:', req.body);
+        console.log('👨‍💼 HOD login request:', req.body);
 
         const { emailId, password } = req.body;
 
@@ -455,39 +441,29 @@ const hodLogin = async (req, res) => {
         }
 
         const cleanEmail = emailId.toLowerCase().trim();
-        console.log('🔍 Looking for HOD with email:', cleanEmail);
-
         const hod = await HOD.findOne({ emailId: cleanEmail });
-        
+
         if (!hod) {
-            console.log('❌ HOD not found for email:', cleanEmail);
             return res.status(400).json({
                 success: false,
                 message: 'HOD account not found. Please contact administration.'
             });
         }
 
-        console.log('✅ HOD found:', hod.emailId, 'Role:', hod.role);
-
         const isPasswordValid = await bcrypt.compare(password, hod.password);
-        
         if (!isPasswordValid) {
-            console.log('❌ Invalid password for HOD:', hod.emailId);
             return res.status(400).json({
                 success: false,
                 message: 'Invalid password. Please try again.'
             });
         }
 
-        // Generate token using helper function
         const token = generateToken({
             userId: hod._id,
             role: hod.role,
             email: hod.emailId,
             name: hod.Name
         });
-
-        console.log('✅ HOD login successful for:', hod.emailId);
 
         const hodResponse = {
             id: hod._id,
@@ -515,10 +491,10 @@ const hodLogin = async (req, res) => {
     }
 };
 
-// Dean Login
+// ==================== DEAN LOGIN ====================
 const deanLogin = async (req, res) => {
     try {
-        console.log('🎓 Dean login request received:', req.body);
+        console.log('🎓 Dean login request:', req.body);
 
         const { emailId, password } = req.body;
 
@@ -530,45 +506,35 @@ const deanLogin = async (req, res) => {
         }
 
         const cleanEmail = emailId.toLowerCase().trim();
-        console.log('🔍 Looking for Dean with email:', cleanEmail);
-
         const dean = await Dean.findOne({ emailId: cleanEmail });
-        
+
         if (!dean) {
-            console.log('❌ Dean not found for email:', cleanEmail);
             return res.status(400).json({
                 success: false,
                 message: 'Dean account not found. Please contact administration.'
             });
         }
 
-        console.log('✅ Dean found:', dean.emailId, 'Role:', dean.role);
-
         const isPasswordValid = await bcrypt.compare(password, dean.password);
-        
         if (!isPasswordValid) {
-            console.log('❌ Invalid password for Dean:', dean.emailId);
             return res.status(400).json({
                 success: false,
                 message: 'Invalid password. Please try again.'
             });
         }
 
-        // Generate token using helper function
         const token = generateToken({
             userId: dean._id,
-            role: dean.role,
+            role: 'dean',
             email: dean.emailId,
             name: dean.Name
         });
-
-        console.log('✅ Dean login successful for:', dean.emailId);
 
         const deanResponse = {
             id: dean._id,
             name: dean.Name,
             email: dean.emailId,
-            role: dean.role,
+            role: 'dean',
             isFirstLogin: dean.isFirstLogin
         };
 
@@ -589,21 +555,234 @@ const deanLogin = async (req, res) => {
     }
 };
 
-// Token verification endpoint
-const verifyToken = async (req, res) => {
+// ==================== LOGOUT (stateless JWT — client clears token) ====================
+const logout = async (req, res) => {
     try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-        
-        if (!token) {
-            return res.json({ 
-                valid: false, 
-                message: 'No token provided' 
+        // JWT is stateless — client must delete the token from localStorage
+        res.json({
+            success: true,
+            message: 'Logged out successfully. Please clear the token on client side.'
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error during logout'
+        });
+    }
+};
+
+// ==================== GET PROFILE ====================
+const getProfile = async (req, res) => {
+    try {
+        const { userId, role } = req.user || {};
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authenticated'
             });
         }
 
+        let user;
+        if (role === 'student') {
+            user = await User.findById(userId).select('-password');
+        } else if (role === 'coordinator') {
+            user = await Teacher.findById(userId).select('-password');
+        } else if (role === 'hod') {
+            user = await HOD.findById(userId).select('-password');
+        } else if (role === 'dean') {
+            user = await Dean.findById(userId).select('-password');
+        }
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.Name,
+                email: user.emailId,
+                role: role,
+                department: user.Department,
+                isFirstLogin: user.isFirstLogin
+            }
+        });
+
+    } catch (error) {
+        console.error('Get profile error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching profile'
+        });
+    }
+};
+
+// ==================== GET ALL TEACHERS ====================
+const getAllTeachers = async (req, res) => {
+    try {
+        const teachers = await Teacher.find({})
+            .select('Name emailId role Department isFirstLogin');
+        res.json({ success: true, teachers });
+    } catch (error) {
+        console.error('Error fetching teachers:', error);
+        res.status(500).json({ success: false, message: 'Error fetching teachers' });
+    }
+};
+
+// ==================== GET ALL STUDENTS ====================
+const getAllStudents = async (req, res) => {
+    try {
+        const students = await User.find({ role: 'student' })
+            .select('Name emailId rollno Department Course_Name semester year phoneNumber createdAt')
+            .sort({ createdAt: -1 });
+        res.json({ success: true, students, count: students.length });
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        res.status(500).json({ success: false, message: 'Error fetching students' });
+    }
+};
+
+// ==================== GET ALL HODs ====================
+const getAllHODs = async (req, res) => {
+    try {
+        const hods = await HOD.find({})
+            .select('Name emailId Department isFirstLogin createdAt');
+        res.json({ success: true, hods });
+    } catch (error) {
+        console.error('Error fetching HODs:', error);
+        res.status(500).json({ success: false, message: 'Error fetching HODs' });
+    }
+};
+
+// ==================== GET DASHBOARD STATS ====================
+const getDashboardStats = async (req, res) => {
+    try {
+        const totalTeachers = await Teacher.countDocuments({ role: 'coordinator' });
+        const totalStudents = await User.countDocuments({ role: 'student' });
+        const totalHODs = await HOD.countDocuments();
+        const totalDeans = await Dean.countDocuments();
+
+        const departments = await User.distinct('Department');
+        const departmentStats = await User.aggregate([
+            { $match: { role: 'student' } },
+            { $group: { _id: '$Department', count: { $sum: 1 } } }
+        ]);
+
+        res.json({
+            success: true,
+            stats: {
+                totalTeachers,
+                totalStudents,
+                totalHODs,
+                totalDeans,
+                totalDepartments: departments.length,
+                departmentStats
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching dashboard statistics'
+        });
+    }
+};
+
+// ==================== UPDATE PASSWORD - TEACHER ====================
+const updatePasswordTeacher = async (req, res) => {
+    try {
+        const { emailId, currentPassword, newPassword } = req.body;
+
+        const teacher = await Teacher.findOne({ emailId: emailId.toLowerCase().trim() });
+        if (!teacher) {
+            return res.status(400).json({ success: false, message: 'Teacher not found' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(currentPassword, teacher.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: 'Current password is incorrect' });
+        }
+
+        teacher.password = await bcrypt.hash(newPassword, 12);
+        teacher.isFirstLogin = false;
+        await teacher.save();
+
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Teacher password update error:', error);
+        res.status(500).json({ success: false, message: 'Error updating password' });
+    }
+};
+
+// ==================== UPDATE PASSWORD - HOD ====================
+const updatePasswordHOD = async (req, res) => {
+    try {
+        const { emailId, currentPassword, newPassword } = req.body;
+
+        const hod = await HOD.findOne({ emailId: emailId.toLowerCase().trim() });
+        if (!hod) {
+            return res.status(400).json({ success: false, message: 'HOD not found' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(currentPassword, hod.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: 'Current password is incorrect' });
+        }
+
+        hod.password = await bcrypt.hash(newPassword, 12);
+        hod.isFirstLogin = false;
+        await hod.save();
+
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('HOD password update error:', error);
+        res.status(500).json({ success: false, message: 'Error updating password' });
+    }
+};
+
+// ==================== UPDATE PASSWORD - DEAN ====================
+const updatePasswordDean = async (req, res) => {
+    try {
+        const { emailId, currentPassword, newPassword } = req.body;
+
+        const dean = await Dean.findOne({ emailId: emailId.toLowerCase().trim() });
+        if (!dean) {
+            return res.status(400).json({ success: false, message: 'Dean not found' });
+        }
+
+        const isPasswordValid = await bcrypt.compare(currentPassword, dean.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: 'Current password is incorrect' });
+        }
+
+        dean.password = await bcrypt.hash(newPassword, 12);
+        dean.isFirstLogin = false;
+        await dean.save();
+
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Dean password update error:', error);
+        res.status(500).json({ success: false, message: 'Error updating password' });
+    }
+};
+
+// ==================== VERIFY TOKEN ====================
+const verifyToken = async (req, res) => {
+    try {
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+
+        if (!token) {
+            return res.json({ valid: false, message: 'No token provided' });
+        }
+
         const decoded = jwt.verify(token, JWT_CONFIG.secret);
-        
-        // Check if user still exists based on role
+
         let user;
         if (decoded.role === 'student') {
             user = await User.findById(decoded.userId);
@@ -616,14 +795,11 @@ const verifyToken = async (req, res) => {
         }
 
         if (!user) {
-            return res.json({ 
-                valid: false, 
-                message: 'User not found' 
-            });
+            return res.json({ valid: false, message: 'User not found' });
         }
 
-        res.json({ 
-            valid: true, 
+        res.json({
+            valid: true,
             user: {
                 id: user._id,
                 name: user.Name,
@@ -633,15 +809,12 @@ const verifyToken = async (req, res) => {
         });
     } catch (error) {
         console.error('Token verification error:', error);
-        res.json({ 
-            valid: false, 
-            message: 'Invalid token' 
-        });
+        res.json({ valid: false, message: 'Invalid token' });
     }
 };
 
-// ... (Keep all other functions like getAllTeachers, getAllStudents, etc. the same)
-
+// ==================== EXPORTS ====================
+// ✅ All exports now properly defined — no ReferenceError possible
 module.exports = {
     studentRegister,
     login,
@@ -660,6 +833,6 @@ module.exports = {
     updatePasswordTeacher,
     updatePasswordHOD,
     updatePasswordDean,
-    verifyToken, // Add the new verifyToken function
-    generateToken // Export for testing if needed
+    verifyToken,
+    generateToken
 };

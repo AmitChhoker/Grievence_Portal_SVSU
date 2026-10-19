@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage'
 import StudentRegister from './components/StudentRegister'
 import Login from './components/Login'
@@ -11,6 +11,25 @@ import HODDashboard from './components/HODDashboard'
 import DeanLogin from './components/DeanLogin'
 import DeanDashboard from './components/DeanDashboard'
 import './App.css';
+
+// ⚠️ TEMPORARY DEBUG BLOCK — error solve hone ke baad DELETE kar dena
+console.log('🔍 App.jsx imports check:');
+const __imports__ = {
+  // Router imports (react-router-dom)
+  Router, Routes, Route,
+  // Page components
+  HomePage, StudentRegister, Login, TeacherLogin,
+  StudentDashboard, TeacherDashboard,
+  HODLogin, HODDashboard,
+  DeanLogin, DeanDashboard,
+};
+Object.entries(__imports__).forEach(([name, val]) => {
+  if (val === undefined) {
+    console.error(`❌❌❌ UNDEFINED IMPORT: ${name}`);
+  } else {
+    console.log(`✅ ${name}:`, typeof val);
+  }
+});
 
 function App() {
   return (
