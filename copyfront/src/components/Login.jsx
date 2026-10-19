@@ -124,11 +124,9 @@ const Login = () => {
         setMessage(response.data.message || 'Login failed');
         setIsError(true);
       }
-    } catch (error) {
+        } catch (error) {
       console.error('❌ Login error details:', error);
-      handleLoginError(error);
-    } finally {
-      setIsLoading(false);
+      setMessage('❌ Login failed. Please check your credentials.');
     }
   };
 
